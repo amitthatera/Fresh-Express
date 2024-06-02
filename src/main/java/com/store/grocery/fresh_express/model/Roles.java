@@ -1,23 +1,20 @@
 package com.store.grocery.fresh_express.model;
 
+import com.store.grocery.fresh_express.shared.kernel.AbstractAuditingEntity;
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(name = "roles")
-@EntityListeners(AuditingEntityListener.class)
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Roles {
+public class Roles extends AbstractAuditingEntity<Long> {
 
     @Id
     @SequenceGenerator(name = "role_seq", allocationSize = 1)
@@ -31,15 +28,11 @@ public class Roles {
     @Column(name = "role_description")
     private String roleDescription;
 
-    @CreatedDate
-    @Column(name = "created_date", nullable = false, updatable = false)
-    private LocalDateTime createdDate;
-
-    @LastModifiedDate
-    @Column(name = "last_modified_date", insertable = false)
-    private LocalDateTime lastModifiedDate;
-
     @ManyToMany(mappedBy = "roles")
-    private Set<User> users;
+    private Set<User> users = new HashSet<>();
 
+    @Override
+    public Long getId() {
+        return this.roleId;
+    }
 }

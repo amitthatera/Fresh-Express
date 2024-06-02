@@ -1,11 +1,9 @@
 package com.store.grocery.fresh_express.model;
 
+import com.store.grocery.fresh_express.shared.kernel.AbstractAuditingEntity;
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-
-import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -15,7 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Vendor {
+public class Vendor extends AbstractAuditingEntity<Long> {
 
     @Id
     @SequenceGenerator(name = "vendor_seq", allocationSize = 1)
@@ -32,18 +30,15 @@ public class Vendor {
     @Column(name = "vendor_mobile", nullable = false)
     private String vendorMobile;
 
-    @Column(name = "vendor_address", nullable = false)
-    private String vendorAddress;
-
-    @CreatedDate
-    @Column(name = "created_date", nullable = false, updatable = false)
-    private LocalDateTime createdDate;
-
-    @LastModifiedDate
-    @Column(name = "last_modified_date", insertable = false)
-    private LocalDateTime lastModifiedDate;
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "address_id", referencedColumnName = "address_id")
+    private Address vendorAddress;
 
     @OneToMany(mappedBy = "vendor", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Product> productList;
+    private List<Product> productList = new ArrayList<>();
 
+    @Override
+    public Long getId() {
+        return this.vendorId;
+    }
 }

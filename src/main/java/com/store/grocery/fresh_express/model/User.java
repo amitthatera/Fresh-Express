@@ -1,29 +1,26 @@
 package com.store.grocery.fresh_express.model;
 
+import com.store.grocery.fresh_express.shared.kernel.AbstractAuditingEntity;
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(name = "users")
-@EntityListeners(AuditingEntityListener.class)
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class User {
+public class User extends AbstractAuditingEntity<Long>{
 
     @Id
     @SequenceGenerator(name = "user_seq", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_seq")
     @Column(name = "user_id")
-    private Long user_id;
+    private Long userId;
 
     @Column(name = "first_name", nullable = false)
     private String firstName;
@@ -40,14 +37,6 @@ public class User {
     @Column(name = "password", nullable = false)
     private String password;
 
-    @CreatedDate
-    @Column(name = "created_date", nullable = false, updatable = false)
-    private LocalDateTime createdDate;
-
-    @LastModifiedDate
-    @Column(name = "last_modified_date", insertable = false)
-    private LocalDateTime lastModifiedDate;
-
     @Column(name = "is_enabled")
     private Boolean isEnabled;
 
@@ -58,7 +47,14 @@ public class User {
     private Boolean isNumberVerified;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    private Set<Roles> roles;
+    @JoinTable(name = "user_roles", joinColumns = {
+            @JoinColumn(name = "user_id", referencedColumnName = "user_id")}, inverseJoinColumns =
+            @JoinColumn(name = "role_id", referencedColumnName = "role_id")
+    )
+    private Set<Roles> roles = new HashSet<>();
 
-
+    @Override
+    public Long getId() {
+        return this.userId;
+    }
 }
