@@ -1,3 +1,6 @@
+server:
+  port: 9090
+
 spring:
   datasource:
     url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/gstore
@@ -22,3 +25,12 @@ spring:
      password: ${POSTGRES_PASSWORD:postgres}
      baselineOnMigrate: true
      locations: classpath:db/migration
+
+  application:
+    security:
+      jwt:
+        private_key: ${PRIVATE_KEY}
+        public_key: ${PUBLIC_KEY}
+        passphrase: ${PASSPHRASE}
+        access_token_exp: 7200
+        refresh_token_exp: 86400
