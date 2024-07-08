@@ -18,7 +18,6 @@ public class BeanConfiguration {
     private final UserRepository userRepository;
 
     public BeanConfiguration(UserRepository userRepository){
-        super();
         this.userRepository = userRepository;
     }
 
@@ -34,7 +33,7 @@ public class BeanConfiguration {
     }
 
     @Bean
-    AuthenticationProvider getAutheticationProvider(){
+    AuthenticationProvider getAuthenticationProvider(){
         DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
         daoAuthenticationProvider.setUserDetailsService(getUserDetailService());
         daoAuthenticationProvider.setPasswordEncoder(getPasswordEncoder());
