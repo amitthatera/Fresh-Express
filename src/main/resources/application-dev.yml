@@ -34,3 +34,4 @@ spring:
         passphrase: ${PASSPHRASE}
         access_token_exp: 7200
         refresh_token_exp: 86400
+
