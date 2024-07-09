@@ -36,6 +36,7 @@ public class Vendor extends AbstractAuditingEntity<Long> {
     private Address vendorAddress;
 
     @OneToMany(mappedBy = "vendor", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @Builder.Default
     private List<Product> productList = new ArrayList<>();
 
     @Override

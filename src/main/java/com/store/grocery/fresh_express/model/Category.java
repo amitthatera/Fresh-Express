@@ -32,6 +32,7 @@ public class Category extends AbstractAuditingEntity<Long> {
     private String  categoryDescription;
 
     @OneToMany(mappedBy = "category")
+    @Builder.Default
     private List<Product> products = new ArrayList<>();
 
     @Override

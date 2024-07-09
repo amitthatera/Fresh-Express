@@ -1,6 +1,7 @@
 package com.store.grocery.fresh_express.service.impl;
 
 import com.store.grocery.fresh_express.custom_exception.ResourceNotFoundException;
+import com.store.grocery.fresh_express.custom_exception.UserAlreadyExistsException;
 import com.store.grocery.fresh_express.dto.UserDTO;
 import com.store.grocery.fresh_express.mapper.UserMapper;
 import com.store.grocery.fresh_express.model.Roles;
@@ -35,7 +36,7 @@ public class UserServiceImpl implements UserService {
         User user = userMapper.toUser(userDTO);
         boolean userExist = userRepository.findByEmailAddressIgnoreCase(user.getEmailAddress()).isPresent();
         if(userExist)
-            throw new IllegalArgumentException("User already exists!!");
+            throw new UserAlreadyExistsException("User already exists!!");
         user.setPassword(passwordEncoder.encode(userDTO.password()));
         Roles roles = rolesRepository.findByRoleName(Roles.RoleName.USER)
                 .orElseThrow(() -> new ResourceNotFoundException("Role Not Exist!!"));

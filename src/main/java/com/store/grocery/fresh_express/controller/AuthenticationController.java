@@ -1,6 +1,5 @@
 package com.store.grocery.fresh_express.controller;
 
-import com.store.grocery.fresh_express.custom_exception.ApiException;
 import com.store.grocery.fresh_express.dto.AuthenticationRequest;
 import com.store.grocery.fresh_express.dto.UserDTO;
 import com.store.grocery.fresh_express.security.JwtService;
@@ -15,9 +14,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequestMapping("/auth")
 public class AuthenticationController {
 
     private final UserDetailsService userDetailsService;
@@ -38,10 +39,16 @@ public class AuthenticationController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@Valid @RequestBody AuthenticationRequest request){
-        authenticateDetails(request.username(), request.password());
-        UserDetails userDetails = userDetailsService.loadUserByUsername(request.username());
-        String token = jwtService.generateAccessToken(userDetails);
-        return ResponseEntity.status(HttpStatus.OK).body(token);
+        try {
+            authenticateDetails(request.username(), request.password());
+            UserDetails userDetails = userDetailsService.loadUserByUsername(request.username());
+            String token = jwtService.generateAccessToken(userDetails);
+            return ResponseEntity.ok(token);
+        } catch (BadCredentialsException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Incorrect Username or Password");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred during authentication");
+        }
     }
 
     @PostMapping("/register")
@@ -53,11 +60,7 @@ public class AuthenticationController {
     private void authenticateDetails(String username, String password) {
         UsernamePasswordAuthenticationToken authToken = new
                 UsernamePasswordAuthenticationToken(username, password);
-        try {
             authenticationManager.authenticate(authToken);
-        }catch(BadCredentialsException e) {
-            throw new ApiException("Incorrect Username or Password !!");
-        }
     }
 }
 

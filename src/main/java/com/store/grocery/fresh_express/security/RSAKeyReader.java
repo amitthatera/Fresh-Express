@@ -12,10 +12,11 @@ import org.bouncycastle.operator.InputDecryptorProvider;
 import org.bouncycastle.pkcs.PKCS8EncryptedPrivateKeyInfo;
 import org.bouncycastle.pkcs.PKCSException;
 import org.bouncycastle.pkcs.jcajce.JcePKCSPBEInputDecryptorProviderBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -26,25 +27,33 @@ import java.security.Security;
 @Component
 public class RSAKeyReader {
 
-    static PrivateKey readPrivateKey(String privateKeyPath, String password) throws IOException, PKCSException {
-        PrivateKeyInfo pki;
+    private static final Logger logger = LoggerFactory.getLogger(RSAKeyReader.class);
+
+    public static PrivateKey readPrivateKey(String privateKeyPath, String password) throws IOException, PKCSException {
         Security.addProvider(new BouncyCastleProvider());
 
-        try (InputStream inputStream = new ClassPathResource(privateKeyPath).getInputStream();
-             PEMParser pemParser = new PEMParser(new InputStreamReader(new ByteArrayInputStream(inputStream.readAllBytes())))) {
+        ClassPathResource resource = new ClassPathResource(privateKeyPath);
+        if (!resource.exists()) {
+            logger.error("Private key resource does not exist: {}", privateKeyPath);
+            throw new IOException("Private key resource does not exist: " + privateKeyPath);
+        }
+
+        try (InputStream inputStream = resource.getInputStream();
+             PEMParser pemParser = new PEMParser(new InputStreamReader(inputStream))) {
+
+            logger.info("Reading private key from path: {}", privateKeyPath);
 
             Object object = pemParser.readObject();
             JcaPEMKeyConverter converter = new JcaPEMKeyConverter().setProvider("BC");
 
+            PrivateKeyInfo pki;
             if (object instanceof PKCS8EncryptedPrivateKeyInfo epki) {
                 JcePKCSPBEInputDecryptorProviderBuilder builder = new JcePKCSPBEInputDecryptorProviderBuilder().setProvider("BC");
                 InputDecryptorProvider idp = builder.build(password.toCharArray());
                 pki = epki.decryptPrivateKeyInfo(idp);
-
             } else if (object instanceof PEMEncryptedKeyPair epki) {
                 PEMKeyPair pkp = epki.decryptKeyPair(new JcePEMDecryptorProviderBuilder().setProvider("BC").build(password.toCharArray()));
                 pki = pkp.getPrivateKeyInfo();
-
             } else {
                 throw new PKCSException("Invalid encrypted private key class: " + object.getClass().getName());
             }
@@ -53,11 +62,19 @@ public class RSAKeyReader {
         }
     }
 
-    static PublicKey readPublicKey(String publicKeyPath) throws IOException {
+    public static PublicKey readPublicKey(String publicKeyPath) throws IOException {
         Security.addProvider(new BouncyCastleProvider());
 
-        try (InputStream inputStream = new ClassPathResource(publicKeyPath).getInputStream();
+        ClassPathResource resource = new ClassPathResource(publicKeyPath);
+        if (!resource.exists()) {
+            logger.error("Public key resource does not exist: {}", publicKeyPath);
+            throw new IOException("Public key resource does not exist: " + publicKeyPath);
+        }
+
+        try (InputStream inputStream = resource.getInputStream();
              PEMParser pemParser = new PEMParser(new InputStreamReader(inputStream))) {
+
+            logger.info("Reading public key from path: {}", publicKeyPath);
 
             JcaPEMKeyConverter converter = new JcaPEMKeyConverter().setProvider("BC");
             Object object = pemParser.readObject();
@@ -67,13 +84,7 @@ public class RSAKeyReader {
             } else {
                 throw new IOException("Invalid public key file format");
             }
-
-        } catch (IOException e) {
-            throw new IOException("Error reading public key file", e);
-        } catch (Exception e) {
-            throw new RuntimeException("Error loading public key", e);
         }
     }
-
 
 }

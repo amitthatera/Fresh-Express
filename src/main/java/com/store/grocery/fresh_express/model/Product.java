@@ -4,6 +4,7 @@ import com.store.grocery.fresh_express.shared.kernel.AbstractAuditingEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -45,7 +46,8 @@ public class Product extends AbstractAuditingEntity<Long> {
     private int stock;
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "product")
-    private Set<Image> product_images;
+    @Builder.Default
+    private Set<Image> product_images = new HashSet<>();
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "category_id", referencedColumnName = " category_id")

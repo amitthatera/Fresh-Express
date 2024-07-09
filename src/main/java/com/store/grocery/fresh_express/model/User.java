@@ -55,6 +55,7 @@ public class User extends AbstractAuditingEntity<Long> implements UserDetails {
             @JoinColumn(name = "user_id", referencedColumnName = "user_id")}, inverseJoinColumns =
             @JoinColumn(name = "role_id", referencedColumnName = "role_id")
     )
+    @Builder.Default
     private Set<Roles> roles = new HashSet<>();
 
 

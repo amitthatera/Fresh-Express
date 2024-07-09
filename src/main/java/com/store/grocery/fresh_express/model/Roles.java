@@ -1,5 +1,6 @@
 package com.store.grocery.fresh_express.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.store.grocery.fresh_express.shared.kernel.AbstractAuditingEntity;
 import jakarta.persistence.*;
 import lombok.*;
@@ -30,6 +31,7 @@ public class Roles extends AbstractAuditingEntity<Long> {
     private String roleDescription;
 
     @ManyToMany(mappedBy = "roles")
+    @JsonIgnore
     private Set<User> users = new HashSet<>();
 
     @Override
