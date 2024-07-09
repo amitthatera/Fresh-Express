@@ -9,7 +9,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -25,7 +24,7 @@ public class User extends AbstractAuditingEntity<Long> implements UserDetails {
     @SequenceGenerator(name = "user_seq", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_seq")
     @Column(name = "user_id")
-    private Long userId;
+    private long userId;
 
     @Column(name = "first_name", nullable = false)
     private String firstName;
@@ -43,13 +42,13 @@ public class User extends AbstractAuditingEntity<Long> implements UserDetails {
     private String password;
 
     @Column(name = "is_enabled")
-    private Boolean isEnabled;
+    private boolean isEnabled;
 
     @Column(name = "is_email_verified")
-    private Boolean isEmailVerified;
+    private boolean isEmailVerified;
 
     @Column(name = "is_number_verified")
-    private Boolean isNumberVerified;
+    private boolean isNumberVerified;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_roles", joinColumns = {
@@ -57,6 +56,7 @@ public class User extends AbstractAuditingEntity<Long> implements UserDetails {
             @JoinColumn(name = "role_id", referencedColumnName = "role_id")
     )
     private Set<Roles> roles = new HashSet<>();
+
 
     @Override
     public Long getId() {
@@ -66,8 +66,8 @@ public class User extends AbstractAuditingEntity<Long> implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Set<GrantedAuthority> authorities = new HashSet<>();
-        this.getRoles().forEach(role ->
-                authorities.add( new SimpleGrantedAuthority(role.getRoleName())));
+        getRoles().forEach(role ->
+                authorities.add( new SimpleGrantedAuthority(role.getRoleName().toString())));
         return authorities;
     }
 

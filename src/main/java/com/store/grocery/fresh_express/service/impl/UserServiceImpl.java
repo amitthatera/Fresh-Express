@@ -1,32 +1,51 @@
 package com.store.grocery.fresh_express.service.impl;
 
+import com.store.grocery.fresh_express.custom_exception.ResourceNotFoundException;
 import com.store.grocery.fresh_express.dto.UserDTO;
 import com.store.grocery.fresh_express.mapper.UserMapper;
+import com.store.grocery.fresh_express.model.Roles;
 import com.store.grocery.fresh_express.model.User;
+import com.store.grocery.fresh_express.repository.RolesRepository;
 import com.store.grocery.fresh_express.repository.UserRepository;
 import com.store.grocery.fresh_express.service.UserService;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 
+@Service
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
 
     private final UserMapper userMapper;
 
-    public UserServiceImpl(UserRepository userRepository, UserMapper userMapper) {
+    private final PasswordEncoder passwordEncoder;
+
+    private final RolesRepository rolesRepository;
+
+    public UserServiceImpl(UserRepository userRepository, UserMapper userMapper,
+                           PasswordEncoder passwordEncoder, RolesRepository rolesRepository) {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
+        this.passwordEncoder = passwordEncoder;
+        this.rolesRepository = rolesRepository;
     }
 
     @Override
-    public User createUser(UserDTO userDTO) {
+    public UserDTO createUser(UserDTO userDTO) {
         User user = userMapper.toUser(userDTO);
         boolean userExist = userRepository.findByEmailAddressIgnoreCase(user.getEmailAddress()).isPresent();
         if(userExist)
             throw new IllegalArgumentException("User already exists!!");
+        user.setPassword(passwordEncoder.encode(userDTO.password()));
+        Roles roles = rolesRepository.findByRoleName(Roles.RoleName.USER)
+                .orElseThrow(() -> new ResourceNotFoundException("Role Not Exist!!"));
+        user.getRoles().add(roles);
+        User newUser = userRepository.save(user);
+        return userMapper.toUserDTO(newUser);
     }
 
     @Override
-    public User updateUser(UserDTO userDTO, long userID) {
+    public UserDTO updateUser(UserDTO userDTO, long userID) {
         return null;
     }
 
@@ -36,7 +55,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getUserByID(long userID) {
+    public UserDTO getUserByID(long userID) {
         return null;
     }
 }

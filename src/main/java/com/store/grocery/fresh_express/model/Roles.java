@@ -20,10 +20,11 @@ public class Roles extends AbstractAuditingEntity<Long> {
     @SequenceGenerator(name = "role_seq", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "role_seq")
     @Column(name = "role_id")
-    private Long roleId;
+    private long roleId;
 
     @Column(name = "role_name")
-    private String roleName;
+    @Enumerated(EnumType.STRING)
+    private RoleName roleName;
 
     @Column(name = "role_description")
     private String roleDescription;
@@ -34,5 +35,12 @@ public class Roles extends AbstractAuditingEntity<Long> {
     @Override
     public Long getId() {
         return this.roleId;
+    }
+
+    public enum RoleName{
+        SUPER_ADMIN,
+        ADMIN,
+        USER,
+        MANAGER,
     }
 }

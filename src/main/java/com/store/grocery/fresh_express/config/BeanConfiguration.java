@@ -23,7 +23,7 @@ public class BeanConfiguration {
 
     @Bean
     UserDetailsService getUserDetailService(){
-        return username -> this.userRepository.findByEmailAddress(username)
+        return username -> this.userRepository.findByEmailAddressIgnoreCase(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User Not Exist!!"));
     }
 

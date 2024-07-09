@@ -4,20 +4,21 @@ import com.store.grocery.fresh_express.shared.kernel.AbstractAuditingEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
+
+@Entity
+@Table(name = "address")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Entity
-@Table(name = "address")
 public class Address extends AbstractAuditingEntity<Long> {
 
     @Id
     @SequenceGenerator(name = "address_seq", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "address_seq")
     @Column(name = "address_id")
-    private Long addressId;
+    private long addressId;
 
     @Column(name = "house_number", nullable = false)
     private String houseNumber;
@@ -35,7 +36,7 @@ public class Address extends AbstractAuditingEntity<Long> {
     private String state;
 
     @Column(nullable = false)
-    private Integer postalCode;
+    private int postalCode;
 
     @OneToOne(mappedBy = "vendorAddress")
     private Vendor vendor;

@@ -12,12 +12,12 @@ import org.springframework.web.context.request.WebRequest;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(UsernameNotFoundException.class)
-    public ResponseEntity<ExceptionResponse> userNameNotFoundException(UsernameNotFoundException exception, WebRequest request){
-       ExceptionResponse response = ExceptionResponse.builder()
-               .statusCode(HttpStatus.NOT_FOUND.value())
-               .message(exception.getMessage())
-               .details(request.getDescription(false))
-               .build();
+    public ResponseEntity<ExceptionResponse> userNameNotFoundException(UsernameNotFoundException exception, WebRequest request) {
+        ExceptionResponse response = ExceptionResponse.builder()
+                .statusCode(HttpStatus.NOT_FOUND.value())
+                .message(exception.getMessage())
+                .details(request.getDescription(false))
+                .build();
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND.value())
                 .body(response);

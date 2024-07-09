@@ -19,7 +19,7 @@ public class Product extends AbstractAuditingEntity<Long> {
     @SequenceGenerator(name = "product_seq", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "product_seq")
     @Column(name = "product_id")
-    private Long productId;
+    private long productId;
 
     @Column(name = "product_name", nullable = false)
     private String productName;
@@ -31,18 +31,18 @@ public class Product extends AbstractAuditingEntity<Long> {
     private String productUUID;
 
     @Column(name = "product_price", nullable = false)
-    private Double productPrice;
+    private double productPrice;
 
-    private Double discount;
+    private double discount;
 
     @Column(name = "discounted_price")
-    private Double discountedPrice;
+    private double discountedPrice;
 
     @Column(name = "is_available")
-    private Boolean isAvailable;
+    private boolean isAvailable;
 
     @Column(name = "stock", nullable = false)
-    private Integer stock;
+    private int stock;
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "product")
     private Set<Image> product_images;

@@ -3,6 +3,7 @@ package com.store.grocery.fresh_express.model;
 import com.store.grocery.fresh_express.shared.kernel.AbstractAuditingEntity;
 import jakarta.persistence.*;
 import lombok.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,7 +20,7 @@ public class Vendor extends AbstractAuditingEntity<Long> {
     @SequenceGenerator(name = "vendor_seq", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "vendor_seq")
     @Column(name = "vendor_id")
-    private Long vendorId;
+    private long vendorId;
 
     @Column(name = "vendor_name", nullable = false)
     private String vendorName;
