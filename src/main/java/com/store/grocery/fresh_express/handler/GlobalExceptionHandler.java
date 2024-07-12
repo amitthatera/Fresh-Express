@@ -1,11 +1,14 @@
 package com.store.grocery.fresh_express.handler;
 
 import com.store.grocery.fresh_express.custom_exception.ApiException;
+import com.store.grocery.fresh_express.custom_exception.ExpiredActivationCodeException;
 import com.store.grocery.fresh_express.custom_exception.ResourceNotFoundException;
 import com.store.grocery.fresh_express.custom_exception.UserAlreadyExistsException;
 import com.store.grocery.fresh_express.utils.ExceptionResponse;
 import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.io.IOException;
 import jakarta.validation.ConstraintViolationException;
+import org.bouncycastle.pkcs.PKCSException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.mapping.PropertyReferenceException;
 import org.springframework.http.HttpStatus;
@@ -23,6 +26,7 @@ import org.springframework.web.multipart.MultipartException;
 import org.springframework.web.multipart.support.MissingServletRequestPartException;
 
 import java.nio.file.AccessDeniedException;
+import java.time.Instant;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -83,8 +87,8 @@ public class GlobalExceptionHandler {
                 .body(response);
     }
 
-    @ExceptionHandler(MultipartException.class)
-    public ResponseEntity<ExceptionResponse> handleMultipartException(MultipartException exception, WebRequest request) {
+    @ExceptionHandler({MultipartException.class, IOException.class, PKCSException.class})
+    public ResponseEntity<ExceptionResponse> handleMultipartException(Exception exception, WebRequest request) {
         ExceptionResponse response = buildExceptionResponse(exception, HttpStatus.INTERNAL_SERVER_ERROR, request);
         return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -92,8 +96,8 @@ public class GlobalExceptionHandler {
     }
 
 
-    @ExceptionHandler({AccessDeniedException.class, ExpiredJwtException.class})
-    public ResponseEntity<ExceptionResponse> handleAccessDeniedException(AccessDeniedException exception, WebRequest request) {
+    @ExceptionHandler({AccessDeniedException.class, ExpiredJwtException.class, ExpiredActivationCodeException.class})
+    public ResponseEntity<ExceptionResponse> handleForbiddenException(Exception exception, WebRequest request) {
         ExceptionResponse response = buildExceptionResponse(exception, HttpStatus.FORBIDDEN, request);
         return ResponseEntity
                 .status(HttpStatus.FORBIDDEN)
@@ -103,7 +107,9 @@ public class GlobalExceptionHandler {
 
     private ExceptionResponse buildExceptionResponse(Exception exception, HttpStatus status, WebRequest request) {
         return ExceptionResponse.builder()
+                .timestamp(Instant.now().toString())
                 .statusCode(status.value())
+                .status(status)
                 .message(exception.getMessage())
                 .details(request.getDescription(false))
                 .build();

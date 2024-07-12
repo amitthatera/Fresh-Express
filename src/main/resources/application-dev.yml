@@ -14,10 +14,7 @@ spring:
     properties:
       hibernate:
         format_sql: true
-  data:
-    jpa:
-      repositories:
-        bootstrap-mode: deferred
+
 
   flyway:
      url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/gstore
@@ -26,12 +23,18 @@ spring:
      baselineOnMigrate: true
      locations: classpath:db/migration
 
-application:
-    security:
-      jwt:
-        private_key: ${PRIVATE_KEY}
-        public_key: ${PUBLIC_KEY}
-        passphrase: ${PASSPHRASE}
-        access_token_exp: 7200
-        refresh_token_exp: 86400
-
+  mail:
+    host: ${SMTP_HOST}
+    port: ${SMTP_PORT}
+    username: ${SMTP_EMAIL}
+    password: ${SMTP_PASSWORD}
+    default-encoding: UTF-8
+    properties:
+      mail:
+        mime:
+          charset: UTF
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true

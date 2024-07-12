@@ -58,6 +58,9 @@ public class User extends AbstractAuditingEntity<Long> implements UserDetails {
     @Builder.Default
     private Set<Roles> roles = new HashSet<>();
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<ActivationCode> activationCodes = new HashSet<>();
+
 
     @Override
     public Long getId() {

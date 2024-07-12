@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Verification</title>
+    <style>
+        /* Styles for email readability */
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+        }
+        h2 {
+            color: #333;
+            text-align: center;
+        }
+        p {
+            color: #555;
+            font-size: 16px;
+        }
+        .verification-code {
+            background-color: #eaeaea;
+            padding: 10px;
+            border-radius: 4px;
+            font-size: 18px;
+            text-align: center;
+            margin: 20px 0;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>Email Verification</h2>
+    <p>Dear <strong th:text="${name}"></strong>,</p>
+    <p>Thank you for registering with us. Please use the verification code below to complete your registration:</p>
+    <div class="verification-code">
+        <strong th:text="${activation_code}"></strong>
+    </div>
+    <p>If you didn't register with us, please ignore this email.</p>
+    <p style="font-size: 14px; color: #888;">This is an automated email. Please do not reply to this message.</p>
+    <div class="footer">
+        <p>Best regards,<br>
+        <b>Fresh Express</b>
+        </p>
+    </div>
+</div>
+</body>
+</html>

@@ -77,11 +77,7 @@ public class JwtService {
     }
 
     private boolean isTokenExpired(String token) {
-        return extractExpiration(token).before(new Date());
-    }
-
-    private Date extractExpiration(String token) {
-        return extractClaims(token, Claims::getExpiration);
+        return extractClaims(token, Claims::getExpiration).before(new Date());
     }
 
     public String extractUsername(String token) {
@@ -89,17 +85,13 @@ public class JwtService {
     }
 
     public <T> T extractClaims(String token, Function<Claims, T> resolver) {
-        Claims claims = extractAllClaims(token);
-        return resolver.apply(claims);
-    }
-
-    private Claims extractAllClaims(String token) {
-        return Jwts.
+        return resolver.apply(Jwts.
                 parser()
                 .verifyWith(publicKey)
                 .build()
                 .parseSignedClaims(token)
-                .getPayload();
+                .getPayload());
     }
+
 
 }

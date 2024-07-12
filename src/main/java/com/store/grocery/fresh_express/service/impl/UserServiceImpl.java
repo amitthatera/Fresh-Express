@@ -9,6 +9,7 @@ import com.store.grocery.fresh_express.model.User;
 import com.store.grocery.fresh_express.repository.RolesRepository;
 import com.store.grocery.fresh_express.repository.UserRepository;
 import com.store.grocery.fresh_express.service.UserService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -23,12 +24,16 @@ public class UserServiceImpl implements UserService {
 
     private final RolesRepository rolesRepository;
 
+    private final ActivationCodeService codeService;
+
     public UserServiceImpl(UserRepository userRepository, UserMapper userMapper,
-                           PasswordEncoder passwordEncoder, RolesRepository rolesRepository) {
+                           PasswordEncoder passwordEncoder, RolesRepository rolesRepository,
+                           ActivationCodeService codeService) {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
         this.passwordEncoder = passwordEncoder;
         this.rolesRepository = rolesRepository;
+        this.codeService = codeService;
     }
 
     @Override
@@ -42,6 +47,7 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new ResourceNotFoundException("Role Not Exist!!"));
         user.getRoles().add(roles);
         User newUser = userRepository.save(user);
+        codeService.sendValidationEmail(newUser);
         return userMapper.toUserDTO(newUser);
     }
 
@@ -59,4 +65,13 @@ public class UserServiceImpl implements UserService {
     public UserDTO getUserByID(long userID) {
         return null;
     }
+
+    @Override
+    public UserDTO findByEmailAddress(String emailAddress) {
+        User user = userRepository.findByEmailAddressIgnoreCase(emailAddress)
+                .orElseThrow(() -> new UsernameNotFoundException("User Not Exists!!"));
+        return userMapper.toUserDTO(user);
+    }
+
+
 }

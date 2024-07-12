@@ -41,8 +41,6 @@ public class RSAKeyReader {
         try (InputStream inputStream = resource.getInputStream();
              PEMParser pemParser = new PEMParser(new InputStreamReader(inputStream))) {
 
-            logger.info("Reading private key from path: {}", privateKeyPath);
-
             Object object = pemParser.readObject();
             JcaPEMKeyConverter converter = new JcaPEMKeyConverter().setProvider("BC");
 
@@ -73,8 +71,6 @@ public class RSAKeyReader {
 
         try (InputStream inputStream = resource.getInputStream();
              PEMParser pemParser = new PEMParser(new InputStreamReader(inputStream))) {
-
-            logger.info("Reading public key from path: {}", publicKeyPath);
 
             JcaPEMKeyConverter converter = new JcaPEMKeyConverter().setProvider("BC");
             Object object = pemParser.readObject();

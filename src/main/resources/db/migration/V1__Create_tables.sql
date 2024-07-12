@@ -16,9 +16,6 @@ CREATE TABLE users (
     last_modified_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
 );
 
--- Create indexes
-CREATE INDEX idx_user_email ON users(email_address);
-CREATE INDEX idx_user_contact ON users(contact_number);
 
 -- Create the role seq
 CREATE SEQUENCE IF NOT EXISTS role_seq START WITH 1 INCREMENT BY 1;
@@ -54,9 +51,6 @@ CREATE TABLE roles (
      last_modified_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
  );
 
- -- Create index on `category_name` for faster lookup
- CREATE INDEX idx_category_name ON category(category_name);
- CREATE INDEX idx_category_uuid ON category(category_uuid);
 
 -- Create the address seq
  CREATE SEQUENCE address_seq START WITH 1 INCREMENT BY 1;
@@ -89,9 +83,6 @@ CREATE TABLE roles (
      CONSTRAINT fk_vendor_address FOREIGN KEY (address_id) REFERENCES address(address_id)
  );
 
- -- Create index on `vendor_name` for faster lookup
- CREATE INDEX idx_vendor_name ON vendors(vendor_name);
-
  -- Create the product seq
  CREATE SEQUENCE IF NOT EXISTS product_seq START WITH 1 INCREMENT BY 1;
 
@@ -113,10 +104,6 @@ CREATE TABLE roles (
      FOREIGN KEY (category_id) REFERENCES category(category_id),
      FOREIGN KEY (vendor_id) REFERENCES vendors(vendor_id)
  );
-
- -- Create index on `product_name` for faster lookup
- CREATE INDEX idx_product_name ON products(product_name);
- CREATE INDEX idx_product_uuid ON products(product_uuid);
 
  -- Create the image seq
  CREATE SEQUENCE img_seq START WITH 1 INCREMENT BY 1;

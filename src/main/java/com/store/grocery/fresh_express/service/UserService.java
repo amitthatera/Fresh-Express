@@ -12,4 +12,6 @@ public interface UserService {
 
     UserDTO getUserByID(long userID);
 
+    UserDTO findByEmailAddress(String emailAddress);
+
 }
