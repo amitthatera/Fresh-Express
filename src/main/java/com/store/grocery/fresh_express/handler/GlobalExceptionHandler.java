@@ -4,7 +4,7 @@ import com.store.grocery.fresh_express.custom_exception.ApiException;
 import com.store.grocery.fresh_express.custom_exception.ExpiredActivationCodeException;
 import com.store.grocery.fresh_express.custom_exception.ResourceNotFoundException;
 import com.store.grocery.fresh_express.custom_exception.UserAlreadyExistsException;
-import com.store.grocery.fresh_express.utils.ExceptionResponse;
+import com.store.grocery.fresh_express.dto.ExceptionResponse;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.io.IOException;
 import jakarta.validation.ConstraintViolationException;
@@ -24,9 +24,10 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.multipart.MultipartException;
 import org.springframework.web.multipart.support.MissingServletRequestPartException;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import java.nio.file.AccessDeniedException;
-import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,7 +38,8 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler({UsernameNotFoundException.class,
             ResourceNotFoundException.class,
-            NoSuchElementException.class
+            NoSuchElementException.class,
+            NoResourceFoundException.class
     })
     public ResponseEntity<ExceptionResponse> handleNotFoundExceptions(Exception exception, WebRequest request) {
         ExceptionResponse response = buildExceptionResponse(exception, HttpStatus.NOT_FOUND, request);
@@ -107,7 +109,7 @@ public class GlobalExceptionHandler {
 
     private ExceptionResponse buildExceptionResponse(Exception exception, HttpStatus status, WebRequest request) {
         return ExceptionResponse.builder()
-                .timestamp(Instant.now().toString())
+                .timestamp(LocalDateTime.now().toString())
                 .statusCode(status.value())
                 .status(status)
                 .message(exception.getMessage())

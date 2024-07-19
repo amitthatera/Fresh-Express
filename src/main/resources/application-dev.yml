@@ -38,3 +38,15 @@ spring:
           starttls:
             enable: true
             required: true
+
+logging:
+  level:
+    org:
+      springframework:
+        cache: TRACE
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"

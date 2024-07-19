@@ -4,12 +4,14 @@ import com.store.grocery.fresh_express.service.impl.RoleInitializationService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.scheduling.annotation.EnableAsync;
 
 @SpringBootApplication
 @EnableJpaAuditing
 @EnableAsync
+@EnableCaching
 public class FreshExpressApplication implements CommandLineRunner {
 
 	private final RoleInitializationService roleInitializationService;

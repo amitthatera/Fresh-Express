@@ -26,4 +26,5 @@ networks:
 
 volumes:
   postgres:
+  redis:
 

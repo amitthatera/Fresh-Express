@@ -33,6 +33,12 @@ public class SecurityConfiguration {
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
     }
 
+    private final String[] PUBLIC_URLS = {
+            "/auth/**",
+            "/user/**",
+            "/actuator/**"
+    };
+
     @Bean
     SecurityFilterChain httpSecurityFilterChain(HttpSecurity http) throws Exception {
         return http
@@ -40,7 +46,7 @@ public class SecurityConfiguration {
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(
                         request -> request
-                                .requestMatchers("/auth/**").permitAll()
+                                .requestMatchers(PUBLIC_URLS).permitAll()
                                 .requestMatchers(HttpMethod.GET).permitAll()
                                 .anyRequest()
                                 .authenticated())

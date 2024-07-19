@@ -2,12 +2,29 @@ package com.store.grocery.fresh_express.mapper;
 
 import com.store.grocery.fresh_express.dto.UserDTO;
 import com.store.grocery.fresh_express.model.User;
-import org.mapstruct.Mapper;
+import com.store.grocery.fresh_express.shared.kernel.Mapper;
+import org.springframework.stereotype.Component;
 
-@Mapper(componentModel = "spring")
-public interface UserMapper {
+@Component
+public class UserMapper implements Mapper<User, UserDTO> {
 
-    UserDTO toUserDTO(User user);
+    @Override
+    public User mapToEntity(UserDTO dto) {
+       return User.builder()
+               .firstName(dto.firstName())
+               .lastName(dto.lastName())
+               .emailAddress(dto.emailAddress())
+               .contactNumber(dto.contactNumber())
+               .password(dto.password())
+               .build();
+    }
 
-    User toUser(UserDTO userDTO);
+    @Override
+    public UserDTO mapToDTO(User entity) {
+        return new UserDTO(entity.getUserId(), entity.getFirstName(), entity.getLastName(), entity.getEmailAddress(),
+                entity.getContactNumber(), entity.getPassword(), entity.isEnabled(), entity.isEmailVerified(),
+                entity.isNumberVerified(), entity.getRoles());
+    }
+
+
 }
