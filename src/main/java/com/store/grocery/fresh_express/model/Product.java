@@ -47,15 +47,15 @@ public class Product extends AbstractAuditingEntity<Long> {
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "product")
     @Builder.Default
-    private Set<Image> product_images = new HashSet<>();
+    private Set<Image> productImages = new HashSet<>();
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "category_id", referencedColumnName = " category_id")
     private Category category;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "vendor_id", referencedColumnName = "vendor_id")
-    private Vendor vendor;
+    @JoinColumn(name = "user_id", referencedColumnName = "user_id")
+    private User user;
 
     @Override
     public Long getId() {

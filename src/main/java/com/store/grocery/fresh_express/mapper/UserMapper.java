@@ -5,6 +5,8 @@ import com.store.grocery.fresh_express.model.User;
 import com.store.grocery.fresh_express.shared.kernel.Mapper;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
+
 @Component
 public class UserMapper implements Mapper<User, UserDTO> {
 
@@ -23,7 +25,7 @@ public class UserMapper implements Mapper<User, UserDTO> {
     public UserDTO mapToDTO(User entity) {
         return new UserDTO(entity.getUserId(), entity.getFirstName(), entity.getLastName(), entity.getEmailAddress(),
                 entity.getContactNumber(), entity.getPassword(), entity.isEnabled(), entity.isEmailVerified(),
-                entity.isNumberVerified(), entity.getRoles());
+                entity.isNumberVerified(), entity.getRoles(),Optional.empty(),Optional.empty());
     }
 
 

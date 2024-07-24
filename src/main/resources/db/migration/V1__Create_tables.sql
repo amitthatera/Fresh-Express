@@ -64,23 +64,10 @@ CREATE TABLE roles (
      city VARCHAR(255) NOT NULL,
      state VARCHAR(255) NOT NULL,
      postal_code INT NOT NULL,
-     created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
-     last_modified_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
- );
-
--- Create the vendor seq
- CREATE SEQUENCE vendor_seq START WITH 1 INCREMENT BY 1;
-
--- Create the vendor table
- CREATE TABLE vendors (
-     vendor_id BIGINT PRIMARY KEY DEFAULT NEXTVAL('vendor_seq'),
-     vendor_name VARCHAR(255) NOT NULL,
-     vendor_email VARCHAR(255) NOT NULL,
-     vendor_mobile VARCHAR(255) NOT NULL,
-     address_id BIGINT NOT NULL,
+     user_id BIGINT,
      created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
      last_modified_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
-     CONSTRAINT fk_vendor_address FOREIGN KEY (address_id) REFERENCES address(address_id)
+     FOREIGN KEY (user_id) REFERENCES users(user_id)
  );
 
  -- Create the product seq
@@ -98,11 +85,11 @@ CREATE TABLE roles (
      is_available BOOLEAN DEFAULT TRUE,
      stock INT NOT NULL,
      category_id BIGINT,
-     vendor_id BIGINT,
+     user_id BIGINT,
      created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
      last_modified_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
      FOREIGN KEY (category_id) REFERENCES category(category_id),
-     FOREIGN KEY (vendor_id) REFERENCES vendors(vendor_id)
+     FOREIGN KEY (user_id) REFERENCES users(user_id)
  );
 
  -- Create the image seq

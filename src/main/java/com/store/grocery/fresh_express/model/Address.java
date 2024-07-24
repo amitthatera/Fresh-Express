@@ -38,8 +38,9 @@ public class Address extends AbstractAuditingEntity<Long> {
     @Column(nullable = false)
     private int postalCode;
 
-    @OneToOne(mappedBy = "vendorAddress")
-    private Vendor vendor;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id", referencedColumnName = "user_id")
+    private User user;
 
     @Override
     public Long getId() {

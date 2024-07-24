@@ -32,6 +32,7 @@ public class Roles extends AbstractAuditingEntity<Long> {
 
     @ManyToMany(mappedBy = "roles")
     @JsonIgnore
+    @Builder.Default
     private Set<User> users = new HashSet<>();
 
     @Override
@@ -42,7 +43,9 @@ public class Roles extends AbstractAuditingEntity<Long> {
     public enum RoleName{
         SUPER_ADMIN,
         ADMIN,
-        USER,
+        CUSTOMER,
         MANAGER,
+        VENDOR,
+        DELIVERY_PARTNER
     }
 }

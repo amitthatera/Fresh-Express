@@ -1,14 +1,18 @@
 package com.store.grocery.fresh_express.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.store.grocery.fresh_express.model.Roles;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
-import lombok.Builder;
 
+import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public record UserDTO (
         @JsonProperty(access = JsonProperty.Access.READ_ONLY) long userId,
         @NotBlank(message = "Please Enter First Name!!") String firstName,
@@ -23,6 +27,10 @@ public record UserDTO (
         boolean isEnabled,
         boolean isEmailVerified,
         boolean isNumberVerified,
-        Set<Roles> roles
+        Set<Roles> roles,
+        @JsonIgnore
+        Optional<Set<AddressDTO>> addressDTO,
+        @JsonIgnore
+        Optional<List<ProductDTO>> productDTO
 ) {
 }

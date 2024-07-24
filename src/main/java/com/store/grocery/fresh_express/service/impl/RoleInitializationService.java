@@ -34,8 +34,10 @@ public class RoleInitializationService {
         return switch (roleName) {
             case SUPER_ADMIN -> "Super Administrator with all privileges.";
             case ADMIN -> "Administrator with administrative privileges.";
-            case USER -> "Regular user with basic access.";
+            case CUSTOMER -> "Regular user with basic access.";
             case MANAGER -> "Manager with managerial responsibilities.";
+            case VENDOR -> "Provide products or services to customers through the platform.";
+            case DELIVERY_PARTNER -> "Responsible for delivering goods or packages to customers.";
         };
     }
 }
