@@ -9,7 +9,7 @@ import java.util.List;
 
 
 @Entity
-@Table(name = "images/sub_category")
+@Table(name = "sub_category")
 @Getter
 @Setter
 @NoArgsConstructor

@@ -28,6 +28,12 @@ public class Image extends AbstractAuditingEntity<Long> {
     @Column(name = "image_type")
     private String imageType;
 
+    @OneToOne(mappedBy = "categoryImage")
+    private Category category;
+
+    @OneToOne(mappedBy = "subCategoryImage")
+    private SubCategory subCategory;
+
     @ManyToOne
     @JoinColumn(name = "product_id", referencedColumnName = "product_id")
     private Product product;
