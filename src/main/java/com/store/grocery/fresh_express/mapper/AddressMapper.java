@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class AddressMapper implements Mapper<Address, AddressDTO> {
+
     @Override
     public Address mapToEntity(AddressDTO dto) {
         return Address.builder()

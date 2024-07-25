@@ -50,3 +50,8 @@ management:
       exposure:
         include: "*"
 
+image:
+  path:
+    category: classpath:images/category
+    sub_category: classpath:images/sub_category
+    product: classpath:images/product

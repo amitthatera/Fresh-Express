@@ -90,6 +90,18 @@ public class AuthenticationController {
                         .build());
     }
 
+    @PostMapping("/register/vendor")
+    public ResponseEntity<RequestResponse> registerVendor(@Valid @RequestBody UserDTO userDTO) {
+        userService.createVendor(userDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).
+                body(RequestResponse.builder()
+                        .timestamp(Instant.now().toString())
+                        .statusCode(HttpStatus.CREATED.value())
+                        .status(HttpStatus.CREATED)
+                        .message("Vendor Registered Successfully!!")
+                        .build());
+    }
+
     @PostMapping("/refresh")
     public ResponseEntity<RequestResponse> refreshToken(@Valid @RequestBody RequestResponse refreshRequest){
         String token = refreshRequest.refreshToken();

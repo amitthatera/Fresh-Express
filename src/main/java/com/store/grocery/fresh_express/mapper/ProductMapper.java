@@ -8,9 +8,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class ProductMapper implements Mapper<Product, ProductDTO> {
 
-    private final CategoryMapper categoryMapper;
+    private final SubCategoryMapper categoryMapper;
 
-    ProductMapper(CategoryMapper categoryMapper) {
+    public ProductMapper(SubCategoryMapper categoryMapper) {
         this.categoryMapper = categoryMapper;
     }
 
@@ -25,6 +25,7 @@ public class ProductMapper implements Mapper<Product, ProductDTO> {
                 .discountedPrice(dto.discountedPrice())
                 .isAvailable(dto.isAvailable())
                 .stock(dto.stock())
+                .productImages(dto.productImages())
                 .build();
     }
 
@@ -32,6 +33,6 @@ public class ProductMapper implements Mapper<Product, ProductDTO> {
     public ProductDTO mapToDTO(Product entity) {
         return new ProductDTO(entity.getProductName(), entity.getProductDescription(), entity.getProductUUID(),
                 entity.getProductPrice(), entity.getDiscount(), entity.getDiscountedPrice(), entity.isAvailable(),
-                entity.getStock(), entity.getProductImages(), categoryMapper.mapToDTO(entity.getCategory()));
+                entity.getStock(), entity.getProductImages(), categoryMapper.mapToDTO(entity.getSubCategory()));
     }
 }

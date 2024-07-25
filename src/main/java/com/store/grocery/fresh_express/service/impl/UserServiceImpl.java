@@ -64,6 +64,21 @@ public class UserServiceImpl implements UserService {
         return userMapper.mapToDTO(newUser);
     }
 
+    @Override
+    public UserDTO createVendor(UserDTO userDTO){
+        User user = userMapper.mapToEntity(userDTO);
+        boolean userExist = userRepository.findByEmailAddressIgnoreCase(user.getEmailAddress()).isPresent();
+        if(userExist)
+            throw new UserAlreadyExistsException("User already exists!!");
+        user.setPassword(passwordEncoder.encode(userDTO.password()));
+        Roles roles = rolesRepository.findByRoleName(Roles.RoleName.VENDOR)
+                .orElseThrow(() -> new ResourceNotFoundException("Role Not Exist!!"));
+        user.getRoles().add(roles);
+        User newUser = userRepository.save(user);
+        codeService.sendValidationEmail(newUser);
+        return userMapper.mapToDTO(newUser);
+    }
+
 
     @Override
     @CacheEvict(value = "user", key = "#userID")

@@ -17,6 +17,6 @@ public record ProductDTO(
         boolean isAvailable,
         @NotNull(message = "Stock is required!!") @Min(value = 0, message = "Stock cannot be negative!!") int stock,
         @NotEmpty(message = "Product images cannot be empty!!") Set<Image> productImages,
-        CategoryDTO category
+        SubCategoryDTO subCategory
 ) {
 }

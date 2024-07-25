@@ -5,7 +5,9 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "category")
@@ -31,9 +33,13 @@ public class Category extends AbstractAuditingEntity<Long> {
     @Column(name = "category_description")
     private String  categoryDescription;
 
-    @OneToMany(mappedBy = "category")
+    @OneToOne
+    @JoinColumn(name = "image_id", referencedColumnName = "image_id")
+    private Image categoryImage;
+
+    @OneToMany(mappedBy = "category", fetch = FetchType.EAGER, orphanRemoval = true)
     @Builder.Default
-    private List<Product> products = new ArrayList<>();
+    private Set<SubCategory> subCategories = new HashSet<>();
 
     @Override
     public Long getId() {

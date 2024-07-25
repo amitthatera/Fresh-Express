@@ -50,8 +50,8 @@ public class Product extends AbstractAuditingEntity<Long> {
     private Set<Image> productImages = new HashSet<>();
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "category_id", referencedColumnName = " category_id")
-    private Category category;
+    @JoinColumn(name = "sub_category_id", referencedColumnName = " sub_category_id")
+    private SubCategory subCategory;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")

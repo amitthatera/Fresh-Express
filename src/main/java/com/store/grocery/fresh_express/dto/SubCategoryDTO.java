@@ -10,12 +10,13 @@ import java.util.List;
 import java.util.Optional;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public record CategoryDTO(
-        @NotBlank(message = "Category UUID is required!!") String categoryUUID,
-        @NotBlank(message = "Category name is required!!") String categoryName,
-        String categoryDescription,
+public record SubCategoryDTO(
+        @NotBlank(message = "Category UUID is required!!") String subCategoryUUID,
+        @NotBlank(message = "Category name is required!!") String subCategoryName,
+        String subCategoryDescription,
         @NotNull(message = "Please Upload Image!!") Image image,
+        CategoryDTO categoryDTO,
         @JsonIgnore
-        Optional<List<SubCategoryDTO>> subCategoryDTOS
+        Optional<List<ProductDTO>> products
 ) {
 }

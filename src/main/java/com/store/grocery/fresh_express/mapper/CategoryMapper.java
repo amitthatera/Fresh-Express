@@ -15,12 +15,13 @@ public class CategoryMapper implements Mapper<Category, CategoryDTO> {
         return Category.builder()
                 .categoryName(dto.categoryName())
                 .categoryDescription(dto.categoryDescription())
+                .categoryImage(dto.image())
                 .build();
     }
 
     @Override
     public CategoryDTO mapToDTO(Category entity) {
         return new CategoryDTO(entity.getCategoryUUID(), entity.getCategoryName(), entity.getCategoryDescription(),
-                Optional.empty());
+                entity.getCategoryImage(),Optional.empty());
     }
 }

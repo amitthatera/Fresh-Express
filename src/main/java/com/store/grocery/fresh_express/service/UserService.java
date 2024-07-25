@@ -10,6 +10,8 @@ public interface UserService {
 
     UserDTO createUser(UserDTO userDTO);
 
+    UserDTO createVendor(UserDTO userDTO);
+
     void deleteUser(long userID);
 
     PageableResponse<UserDTO> getAllUsers(int pageNumber, int pageSize, String sortBy, String sortDir);

@@ -8,6 +8,7 @@ import com.store.grocery.fresh_express.service.UserService;
 import com.store.grocery.fresh_express.utils.AppConstants;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.Instant;
@@ -25,9 +26,10 @@ public class UserController {
     }
 
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<RequestResponse> deleteUserById(@PathVariable long id) {
-        userService.deleteUser(id);
+    @PreAuthorize("authentication.principal.userId == #userId")
+    @DeleteMapping("/{userId}")
+    public ResponseEntity<RequestResponse> deleteUserById(@PathVariable long userId) {
+        userService.deleteUser(userId);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(RequestResponse.builder()
                         .timestamp(Instant.now().toString())
@@ -37,6 +39,7 @@ public class UserController {
                         .build());
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER')")
     @GetMapping("/{id}")
     public ResponseEntity<RequestResponse> getUserById(@PathVariable long id) {
         UserDTO user = userService.getUserByID(id);
@@ -49,6 +52,7 @@ public class UserController {
                         .build());
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER')")
     @GetMapping("/email/{email}")
     public ResponseEntity<RequestResponse> getUserByEmail(@PathVariable String email) {
         UserDTO user = userService.getUserByEmailAddress(email);
@@ -61,6 +65,7 @@ public class UserController {
                         .build());
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER')")
     @GetMapping("/keyword/{keyword}")
     public ResponseEntity<RequestResponse> getUserByKeyword(@PathVariable String keyword) {
         List<UserDTO> users = userService.getUserByKeyword(keyword);
@@ -73,6 +78,7 @@ public class UserController {
                         .build());
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER')")
     @GetMapping()
     public ResponseEntity<RequestResponse> getAllUsers(
             @RequestParam(value = "pageNumber", defaultValue = AppConstants.PAGE_NUMBER, required = false) int pageNumber,
@@ -89,10 +95,12 @@ public class UserController {
                         .build());
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<RequestResponse> updatePassword(@PathVariable long id,
+
+    @PreAuthorize("authentication.principal.userId == #userId")
+    @PutMapping("/{userId}")
+    public ResponseEntity<RequestResponse> updatePassword(@PathVariable long userId,
                                                           @RequestBody ChangePasswordRequest request){
-        userService.updatePassword(id, request);
+        userService.updatePassword(userId, request);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(RequestResponse.builder()
                         .timestamp(Instant.now().toString())
