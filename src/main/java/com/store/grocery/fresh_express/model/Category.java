@@ -33,7 +33,7 @@ public class Category extends AbstractAuditingEntity<Long> {
     @Column(name = "category_description")
     private String  categoryDescription;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.EAGER, orphanRemoval = true)
     @JoinColumn(name = "image_id", referencedColumnName = "image_id")
     private Image categoryImage;
 

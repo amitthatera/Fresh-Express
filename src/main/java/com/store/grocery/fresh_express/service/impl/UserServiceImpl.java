@@ -56,7 +56,7 @@ public class UserServiceImpl implements UserService {
         if(userExist)
             throw new UserAlreadyExistsException("User already exists!!");
         user.setPassword(passwordEncoder.encode(userDTO.password()));
-        Roles roles = rolesRepository.findByRoleName(Roles.RoleName.CUSTOMER)
+        Roles roles = rolesRepository.findByRoleName(Roles.RoleName.ROLE_CUSTOMER)
                 .orElseThrow(() -> new ResourceNotFoundException("Role Not Exist!!"));
         user.getRoles().add(roles);
         User newUser = userRepository.save(user);
@@ -71,7 +71,7 @@ public class UserServiceImpl implements UserService {
         if(userExist)
             throw new UserAlreadyExistsException("User already exists!!");
         user.setPassword(passwordEncoder.encode(userDTO.password()));
-        Roles roles = rolesRepository.findByRoleName(Roles.RoleName.VENDOR)
+        Roles roles = rolesRepository.findByRoleName(Roles.RoleName.ROLE_VENDOR)
                 .orElseThrow(() -> new ResourceNotFoundException("Role Not Exist!!"));
         user.getRoles().add(roles);
         User newUser = userRepository.save(user);

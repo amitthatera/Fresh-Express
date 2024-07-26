@@ -32,12 +32,12 @@ public class RoleInitializationService {
 
     private String getRoleDescription(Roles.RoleName roleName) {
         return switch (roleName) {
-            case SUPER_ADMIN -> "Super Administrator with all privileges.";
-            case ADMIN -> "Administrator with administrative privileges.";
-            case CUSTOMER -> "Regular user with basic access.";
-            case MANAGER -> "Manager with managerial responsibilities.";
-            case VENDOR -> "Provide products or services to customers through the platform.";
-            case DELIVERY_PARTNER -> "Responsible for delivering goods or packages to customers.";
+            case ROLE_SUPER_ADMIN -> "Super Administrator with all privileges.";
+            case ROLE_ADMIN -> "Administrator with administrative privileges.";
+            case ROLE_CUSTOMER -> "Regular user with basic access.";
+            case ROLE_MANAGER -> "Manager with managerial responsibilities.";
+            case ROLE_VENDOR -> "Provide products or services to customers through the platform.";
+            case ROLE_DELIVERY_PARTNER -> "Responsible for delivering goods or packages to customers.";
         };
     }
 }

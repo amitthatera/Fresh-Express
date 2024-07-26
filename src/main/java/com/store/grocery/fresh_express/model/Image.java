@@ -1,5 +1,6 @@
 package com.store.grocery.fresh_express.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.store.grocery.fresh_express.shared.kernel.AbstractAuditingEntity;
 import jakarta.persistence.*;
 import lombok.*;
@@ -29,13 +30,16 @@ public class Image extends AbstractAuditingEntity<Long> {
     private String imageType;
 
     @OneToOne(mappedBy = "categoryImage")
+    @JsonIgnore
     private Category category;
 
     @OneToOne(mappedBy = "subCategoryImage")
+    @JsonIgnore
     private SubCategory subCategory;
 
     @ManyToOne
     @JoinColumn(name = "product_id", referencedColumnName = "product_id")
+    @JsonIgnore
     private Product product;
 
     @Override

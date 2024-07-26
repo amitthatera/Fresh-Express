@@ -52,6 +52,6 @@ management:
 
 image:
   path:
-    category: classpath:images/category
-    sub_category: classpath:images/sub_category
-    product: classpath:images/product
+    category: src/main/resources/images/category
+    sub_category: src/main/resources/images/sub_category
+    product: src/main/resources/images/product

@@ -1,9 +1,6 @@
 package com.store.grocery.fresh_express.handler;
 
-import com.store.grocery.fresh_express.custom_exception.ApiException;
-import com.store.grocery.fresh_express.custom_exception.ExpiredActivationCodeException;
-import com.store.grocery.fresh_express.custom_exception.ResourceNotFoundException;
-import com.store.grocery.fresh_express.custom_exception.UserAlreadyExistsException;
+import com.store.grocery.fresh_express.custom_exception.*;
 import com.store.grocery.fresh_express.dto.ExceptionResponse;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.io.IOException;
@@ -58,7 +55,8 @@ public class GlobalExceptionHandler {
             ConstraintViolationException.class,
             MissingServletRequestPartException.class,
             IllegalArgumentException.class,
-            UserAlreadyExistsException.class
+            UserAlreadyExistsException.class,
+            FileNotSupportedException.class
     })
     public ResponseEntity<ExceptionResponse> handleBadRequestExceptions(Exception exception, WebRequest request) {
         ExceptionResponse response = buildExceptionResponse(exception, HttpStatus.BAD_REQUEST, request);

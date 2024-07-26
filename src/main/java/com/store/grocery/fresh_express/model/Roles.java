@@ -41,11 +41,11 @@ public class Roles extends AbstractAuditingEntity<Long> {
     }
 
     public enum RoleName{
-        SUPER_ADMIN,
-        ADMIN,
-        CUSTOMER,
-        MANAGER,
-        VENDOR,
-        DELIVERY_PARTNER
+        ROLE_SUPER_ADMIN,
+        ROLE_ADMIN,
+        ROLE_CUSTOMER,
+        ROLE_MANAGER,
+        ROLE_VENDOR,
+        ROLE_DELIVERY_PARTNER
     }
 }

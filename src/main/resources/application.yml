@@ -16,7 +16,7 @@ application:
       private_key: ${PRIVATE_KEY}
       public_key: ${PUBLIC_KEY}
       passphrase: ${PASSPHRASE}
-      access_token_exp: 7200
-      refresh_token_exp: 604800
+      access_token_exp: 7200000
+      refresh_token_exp: 864000000
 
 
