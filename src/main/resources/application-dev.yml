@@ -50,8 +50,3 @@ management:
       exposure:
         include: "*"
 
-image:
-  path:
-    category: src/main/resources/images/category
-    sub_category: src/main/resources/images/sub_category
-    product: src/main/resources/images/product

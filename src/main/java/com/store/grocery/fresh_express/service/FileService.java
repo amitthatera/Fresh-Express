@@ -8,9 +8,10 @@ import java.util.Set;
 
 public interface FileService {
 
-    Image uploadFile(MultipartFile file, String path);
+    Image uploadFile(MultipartFile file, String filePath);
 
-    Set<Image> uploadFiles(MultipartFile[] files, String path);
+    Set<Image> uploadFiles(MultipartFile[] files, String filePath);
 
-    InputStream serveImage(String imageFolder, String fileName);
+    void deleteImage(String publicId, String path);
+
 }

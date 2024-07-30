@@ -41,7 +41,7 @@ public class CategoryController {
     @PutMapping(value = "/{categoryId}", consumes = "multipart/form-data")
     public ResponseEntity<RequestResponse> updateCategory(@PathVariable long categoryId,
                                                           @RequestPart CategoryDTO categoryData,
-                                                          @RequestPart MultipartFile categoryImage) {
+                                                          @RequestPart(required = false) MultipartFile categoryImage) {
         categoryService.updateCategory(categoryId, categoryData, categoryImage);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(RequestResponse.builder()

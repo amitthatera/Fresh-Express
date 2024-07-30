@@ -29,6 +29,9 @@ public class Image extends AbstractAuditingEntity<Long> {
     @Column(name = "image_type")
     private String imageType;
 
+    @Column(name = "image_url", nullable = false)
+    private String imageUrl;
+
     @OneToOne(mappedBy = "categoryImage")
     @JsonIgnore
     private Category category;
